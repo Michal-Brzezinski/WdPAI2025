@@ -11,6 +11,7 @@ class AppController {
                  
         if(file_exists($templatePath)){
             extract($variables);
+            // zapisuje nazwy kluczy jako zmienne, więc można teraz używać $cards
             
             ob_start();
             include $templatePath;

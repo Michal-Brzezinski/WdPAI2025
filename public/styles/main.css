@@ -1,6 +1,57 @@
-h1 {color: blue;}
-
-body{
-    margin: 0;
-    padding: 0;
+h1 {
+    color: blue;
 }
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    background-color: aquamarine;
+    display: grid;
+    grid-template-columns: 0.5fr 2.5fr;
+    height: calc(100vh - 100px);
+}
+
+nav {
+    background-color: palevioletred;
+    display: flex;
+    justify-content: space-between;
+}
+
+nav>ul {
+    display: flex;
+    gap: 1rem;
+}
+
+main {
+    background-color: violet;
+}
+
+aside {
+    background-color: rgb(170, 34, 170);
+}
+
+@media screen and (max-width: 480px) {
+
+    /* do mobilnych */
+    .container {
+        grid-template-columns: 1fr;
+        /* Dzięki temu w jednej kolumnie się wyświetla na mobilnej wersji */
+    }
+
+    aside {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* CTRL+SHIFT+R DO ODŚWIEŻENIA WIDOKU CSS */
