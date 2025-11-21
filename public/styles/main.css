@@ -9,15 +9,18 @@ body {
 
 .container {
     background-color: aquamarine;
-    display: grid;
+    /* display: grid;
     grid-template-columns: 0.5fr 2.5fr;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 100px); */
 }
 
 nav {
     background-color: palevioletred;
     display: flex;
     justify-content: space-between;
+    /* dodane poniżej */
+    align-items: center;
+    height: 100px;
 }
 
 nav>ul {
@@ -26,11 +29,22 @@ nav>ul {
 }
 
 main {
-    background-color: violet;
+    background-color: cornflowerblue;
 }
 
 aside {
-    background-color: rgb(170, 34, 170);
+    background-color: darkgrey;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 0.5fr 2.5fr;
+    height: calc(100vh - 100px);
 }
 
 @media screen and (max-width: 480px) {

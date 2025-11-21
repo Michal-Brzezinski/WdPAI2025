@@ -3,11 +3,11 @@
 require_once 'AppController.php';
 
 
-class DashboardController extends AppController {
-
-    public function index(){
-        // TODO prepare dataset and display in HTML
-
+class DashboardController extends AppController
+{
+    public function index()
+    {
+        // TODO prepare dataset, and display in HTML
         $cards = [
             [
                 'id' => 1,
@@ -46,7 +46,8 @@ class DashboardController extends AppController {
             ],
         ];
 
-        $this->render("dashboard", ['cards' => $cards]); // => to operator przypisania
-    }
+        //$userRepository
 
+        return $this->render("dashboard", ['cards' => $cards]);
+    }
 }
