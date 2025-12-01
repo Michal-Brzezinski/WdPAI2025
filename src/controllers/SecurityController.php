@@ -15,9 +15,15 @@ class SecurityController extends AppController
         $this->userRepository = new UserRepository();
     }
 
-    // TODO dekorator, który definiuje, jakie metody HTTP są dostępne
+
     public function login()
     {
+        // dekorator, który definiuje, jakie metody HTTP są dostępne (jest w AppController)
+        if (!$this->allowMethods(['GET', 'POST'])) {
+            http_response_code(405); // Method Not Allowed
+            return $this->render('405', ['message' => 'Method not allowed']);
+        }
+
         if ($this->isGet()) {
             return $this->render("login");
         }
@@ -29,6 +35,7 @@ class SecurityController extends AppController
             return $this->render('login', ['message' => 'Fill all fields']);
         }
 
+        // get data from database
         $user = $this->userRepository->getUserByEmail($email);
 
         if (!$user) {
@@ -38,8 +45,6 @@ class SecurityController extends AppController
         if (!password_verify($password, $user['password'])) {
             return $this->render('login', ['message' => 'Wrong password']);
         }
-        // TODO get data from database
-
 
         // TODO create user session (żeby wiedzieć czy użytkownik jest zalogowany czy nie)
 
@@ -68,7 +73,7 @@ class SecurityController extends AppController
             return $this->render('register', ['message' => 'passwords should be the same!']);
         }
 
-        // TODO check if user with this email already exists
+        // check if user with this email already exists
         if ($this->userRepository->getUserByEmail($email) != false) {
             return $this->render('register', ['message' => 'This email is already in use. Try to sign in.']);
         }
@@ -83,7 +88,7 @@ class SecurityController extends AppController
             $lastname
         );
 
-        // TODO zwrocenie informajci o pomyslnym zarejstrowaniu
+        // TODO zwrocenie informajci o pomyslnym zarejestrowaniu
         return $this->render("login", ["message" => "Zarejestrowano uytkownika " . $email]);
     }
 }

@@ -14,6 +14,12 @@ class AppController
         return $_SERVER["REQUEST_METHOD"] === 'POST';
     }
 
+    // dekorator, który definiuje, jakie metody HTTP są dostępne
+    protected function allowMethods(array $methods): bool
+    {
+        return in_array($_SERVER["REQUEST_METHOD"], $methods);
+    }
+
     protected function render(string $template = null, array $variables = [])
     {
         $templatePath = 'public/views/' . $template . '.html';
