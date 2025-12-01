@@ -1,52 +1,47 @@
 <?php
-
 require_once "config.php";
 
-// TODO SINGLETON
-
+// singleton
 class Database
 {
-    private $username;
-    private $password;
-    private $port;
-    private $host;
-    private $database;
+    private static $instance = null;
     private $conn;
 
-    public function __construct()
+    private function __construct()
     {
         db_params::load();
-        $this->username = db_params::$USERNAME;
-        $this->password = db_params::$PASSWORD;
-        $this->port = db_params::$PORT;
-        $this->host = db_params::$HOST;
-        $this->database = db_params::$DATABASE;
-    }
+        $username = db_params::$USERNAME;
+        $password = db_params::$PASSWORD;
+        $host = db_params::$HOST;
+        $port = db_params::$PORT;
+        $database = db_params::$DATABASE;
 
-    public function connect()
-    {
+        $dsn = "pgsql:host=$host;port=$port;dbname=$database";
+
         try {
-            $this->conn = new PDO(
-                "pgsql:host=$this->host;port=$this->port;dbname=$this->database",
-                $this->username,
-                $this->password,
-                ["sslmode" => "prefer"]
-            );
-
-            // set the PDO error mode to exception
+            $this->conn = new PDO($dsn, $username, $password, ["sslmode" => "prefer"]);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $this->conn;
         } catch (PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
+            throw new Exception("Connection failed: " . $e->getMessage());
         }
     }
 
-    /*PDO automatycznie zamyka połączenie z bazą danych, 
-    gdy obiekt PDO zostaje zniszczony lub skasowany. 
-    Jednakże, można jawnie "rozłączyć" połączenie poprzez 
-    ustawienie zmienną obiektu PDO na null*/
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new Database();
+        }
+        return self::$instance;
+    }
+
+    public function getConnection()
+    {
+        return $this->conn;
+    }
+
     public function disconnect()
     {
         $this->conn = null;
+        self::$instance = null;
     }
 }

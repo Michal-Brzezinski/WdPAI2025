@@ -1,0 +1,68 @@
+/* Resetowanie domyślnych stylów */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Ogólne ustawienia */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    color: #333;
+}
+
+/* Kontener, który wyśrodkowuje zawartość */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Stylowanie treści strony 404 */
+.content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+/* Stylowanie kodu błędu */
+.error-code {
+    font-size: 120px;
+    font-weight: bold;
+    color: #f44336;
+    margin-bottom: 20px;
+}
+
+/* Stylowanie wiadomości */
+.message {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Stylowanie przycisku powrotu na stronę główną */
+.back-home {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.back-home:hover {
+    background-color: #45a049;
+}

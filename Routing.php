@@ -4,40 +4,45 @@ require_once 'src/controllers/DashboardController.php';
 
 class Routing
 {
+    private static $instance = null;
+    private $routes = [];
 
-    public static $routes = [
-        'login' => [
-            'controller' => 'SecurityController',
-            'action' => 'login'
-        ],
-        'register' => [
-            'controller' => 'SecurityController',
-            'action' => 'register'
-        ],
-        'dashboard' => [
-            'controller' => 'DashboardController',
-            'action' => 'index'
-        ],
-    ];
-
-
-    public static function run(string $path)
+    private function __construct()
     {
-        //TODO na podstawie sciezki sprawdzamy jaki HTML zwrocic
-        switch ($path) {
-            case 'dashboard':
-            case 'login':
-            case 'register':
-                $controller = Routing::$routes[$path]['controller'];
-                $action = Routing::$routes[$path]['action'];
+        $this->routes = [
+            'login' => [
+                'controller' => 'SecurityController',
+                'action' => 'login'
+            ],
+            'register' => [
+                'controller' => 'SecurityController',
+                'action' => 'register'
+            ],
+            'dashboard' => [
+                'controller' => 'DashboardController',
+                'action' => 'index'
+            ],
+        ];
+    }
 
-                $controllerObj = new $controller;
-                $controllerObj->$action();
-                break;
+    public static function getInstance(): Routing
+    {
+        if (self::$instance === null) {
+            self::$instance = new Routing();
+        }
+        return self::$instance;
+    }
 
-            default:
-                include 'public/views/404.html';
-                break;
+    public function run(string $path)
+    {
+        if (array_key_exists($path, $this->routes)) {
+            $controller = $this->routes[$path]['controller'];
+            $action = $this->routes[$path]['action'];
+
+            $controllerObj = new $controller();
+            $controllerObj->$action();
+        } else {
+            include 'public/views/404.html';
         }
     }
 }

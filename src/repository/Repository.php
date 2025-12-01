@@ -8,6 +8,7 @@ class Repository
 
     public function __construct()
     {
-        $this->database = new Database();
+        // używam Singletona
+        $this->database = Database::getInstance()->getConnection();
     }
 }

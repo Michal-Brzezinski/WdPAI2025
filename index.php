@@ -7,4 +7,4 @@ $path = parse_url($path, PHP_URL_PATH);
 
 // var_dump($path);
 
-Routing::run($path);
+Routing::getInstance()->run($path);
