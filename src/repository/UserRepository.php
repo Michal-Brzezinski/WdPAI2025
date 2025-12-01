@@ -25,9 +25,9 @@ class UserRepository extends Repository
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
-        $users = $stmt->fetch(PDO::FETCH_ASSOC);
+        $users = $stmt->fetch(PDO::FETCH_ASSOC); // Jeśli brak użytkownika, $user = false
 
-        return $users;
+        return $users; // Zwróci false, jeśli nie znaleziono użytkownika
     }
 
     public function createUser(string $email, string $hashedpassword, string $firstname, string $lastname)

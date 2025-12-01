@@ -8,36 +8,45 @@ class Database
 {
     private $username;
     private $password;
+    private $port;
     private $host;
     private $database;
+    private $conn;
 
     public function __construct()
     {
-        $this->username = USERNAME;
-        $this->password = PASSWORD;
-        $this->host = HOST;
-        $this->database = DATABASE;
+        db_params::load();
+        $this->username = db_params::$USERNAME;
+        $this->password = db_params::$PASSWORD;
+        $this->port = db_params::$PORT;
+        $this->host = db_params::$HOST;
+        $this->database = db_params::$DATABASE;
     }
 
     public function connect()
     {
         try {
-            $conn = new PDO(
-                "pgsql:host=$this->host;port=5432;dbname=$this->database",
+            $this->conn = new PDO(
+                "pgsql:host=$this->host;port=$this->port;dbname=$this->database",
                 $this->username,
                 $this->password,
-                ["sslmode"  => "prefer"]
+                ["sslmode" => "prefer"]
             );
 
             // set the PDO error mode to exception
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            return $conn;
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $this->conn;
         } catch (PDOException $e) {
             die("Connection failed: " . $e->getMessage());
         }
     }
 
-    // TODO disconnect method
-    // (najlepiej connect dać jako metodę klasy a disconnect tylko rozłącza to)
-
+    /*PDO automatycznie zamyka połączenie z bazą danych, 
+    gdy obiekt PDO zostaje zniszczony lub skasowany. 
+    Jednakże, można jawnie "rozłączyć" połączenie poprzez 
+    ustawienie zmienną obiektu PDO na null*/
+    public function disconnect()
+    {
+        $this->conn = null;
+    }
 }

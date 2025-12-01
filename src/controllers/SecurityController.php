@@ -1,6 +1,7 @@
 <?php
 
 require_once 'AppController.php';
+require_once 'DashboardController.php';
 require_once __DIR__ . "/../repository/UserRepository.php";
 
 // TODO TUTAJ Z TEGO DOKUMENTU GOOGLE DODAĆ DO WŁASNYCH POTRZEB MECHANIZM AUTENTYKACJI
@@ -14,7 +15,7 @@ class SecurityController extends AppController
         $this->userRepository = new UserRepository();
     }
 
-    // TODO dekarator, który definiuje, jakie metody HTTP są dostępne
+    // TODO dekorator, który definiuje, jakie metody HTTP są dostępne
     public function login()
     {
         if ($this->isGet()) {
@@ -42,19 +43,17 @@ class SecurityController extends AppController
 
         // TODO create user session (żeby wiedzieć czy użytkownik jest zalogowany czy nie)
 
-        return $this->render("dashboard"); // rozwiazanie z bledem ladowania kart i brakiem zmiany url
+        return $this->render('dashboard', ['cards' => (DashboardController::$cards)]); // rozwiazanie z bledem ladowania kart i brakiem zmiany url
     }
 
     public function register()
     {
-        // TODO pobranie z formularza email i hasła
-        // TODO insert do bazy danych
-        // TODO zwrocenie informajci o pomyslnym zarejstrowaniu
 
         if ($this->isGet()) {
             return $this->render("register");
         }
 
+        // pobranie z formularza email i hasła
         $email = $_POST["email"] ?? '';
         $password1 = $_POST["password1"] ?? '';
         $password2 = $_POST["password2"] ?? '';
@@ -66,13 +65,17 @@ class SecurityController extends AppController
         }
 
         if ($password1 !== $password2) {
-            return $this->render('register', ['message' => 'asswords should be the same!']);
+            return $this->render('register', ['message' => 'passwords should be the same!']);
         }
 
         // TODO check if user with this email already exists
+        if ($this->userRepository->getUserByEmail($email) != false) {
+            return $this->render('register', ['message' => 'This email is already in use. Try to sign in.']);
+        }
 
         $hashedpassword = password_hash($password1, PASSWORD_BCRYPT);
 
+        // insert do bazy danych
         $this->userRepository->createUser(
             $email,
             $hashedpassword,
@@ -80,9 +83,7 @@ class SecurityController extends AppController
             $lastname
         );
 
-
-        // TODO insert to database user
-
+        // TODO zwrocenie informajci o pomyslnym zarejstrowaniu
         return $this->render("login", ["message" => "Zarejestrowano uytkownika " . $email]);
     }
 }
