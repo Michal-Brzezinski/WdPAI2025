@@ -1,53 +1,41 @@
 <?php
 
 require_once 'AppController.php';
-
+require_once __DIR__ . '/../repository/UserRepository.php';
+require_once __DIR__ . '/../repository/CardsRepository.php';
 
 class DashboardController extends AppController
 {
-    // TODO prepare dataset, and display in HTML
-    public static $cards = [
-        [
-            'id' => 1,
-            'title' => 'Ace of Spades',
-            'subtitle' => 'Legendary card',
-            'imageUrlPath' => 'https://deckofcardsapi.com/static/img/AS.png',
-            'href' => '/cards/ace-of-spades'
-        ],
-        [
-            'id' => 2,
-            'title' => 'Queen of Hearts',
-            'subtitle' => 'Classic romance',
-            'imageUrlPath' => 'https://deckofcardsapi.com/static/img/QH.png',
-            'href' => '/cards/queen-of-hearts'
-        ],
-        [
-            'id' => 3,
-            'title' => 'King of Clubs',
-            'subtitle' => 'Royal strength',
-            'imageUrlPath' => 'https://deckofcardsapi.com/static/img/KC.png',
-            'href' => '/cards/king-of-clubs'
-        ],
-        [
-            'id' => 4,
-            'title' => 'Jack of Diamonds',
-            'subtitle' => 'Sly and sharp',
-            'imageUrlPath' => 'https://deckofcardsapi.com/static/img/JD.png',
-            'href' => '/cards/jack-of-diamonds'
-        ],
-        [
-            'id' => 5,
-            'title' => 'Ten of Hearts',
-            'subtitle' => 'Lucky draw',
-            'imageUrlPath' => 'https://deckofcardsapi.com/static/img/0H.png',
-            'href' => '/cards/ten-of-hearts'
-        ],
-    ];
+
+    private $cardsRepository;
+
+    public function __construct()
+    {
+        $this->cardsRepository = new CardsRepository();
+    }
 
     public function index()
     {
+        $this->requireLogin();
         //$userRepository
 
-        return $this->render("dashboard", ['cards' => $this::$cards]);
+        return $this->render("dashboard", ['cards' => []]);
+    }
+
+    public function search()
+    {
+        $this->requireLogin();
+
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+        if ($contentType !== 'application/json') {
+        }
+        header('Content-Type: application/json; charset=utf-8');
+
+        //TODO get searchtag from searchbar
+
+        echo json_encode($this->cardsRepository->getCardsByTitle('Heart'));
+        return;
+
+        // jak nie zadziała ze zdjęć to naprawić z czatem albo wkleić kod z docsa PHP JSON
     }
 }

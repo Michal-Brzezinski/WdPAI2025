@@ -31,6 +31,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASS}
     ports:
       - "5433:5432"
+    volumes:
+      - lab-pg-data:/var/lib/postgresql
     networks:
       - pg-network
   
@@ -64,4 +66,4 @@ networks:
   pg-network:
 
 volumes:
-  pg-data:
+  lab-pg-data:

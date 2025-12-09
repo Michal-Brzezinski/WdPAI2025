@@ -48,7 +48,50 @@ class SecurityController extends AppController
 
         // TODO create user session (żeby wiedzieć czy użytkownik jest zalogowany czy nie)
 
-        return $this->render('dashboard', ['cards' => (DashboardController::$cards)]); // rozwiazanie z bledem ladowania kart i brakiem zmiany url
+        // Tworzymy sesję użytkownika
+        session_regenerate_id(true); // nowy identyfikator sesji (bezpieczeństwo)
+
+        $_SESSION['user_id'] = $user['id'];          // zakładam, że w tablicy $user jest klucz 'id'
+        $_SESSION['user_email'] = $user['email'];    // zapamiętujemy np. e-mail
+        $_SESSION['user_firstname'] = $user['firstname'] ?? null;
+
+        // ewentualnie możesz dodać prostą flagę:
+        $_SESSION['is_logged_in'] = true;
+
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/dashboard");
+    }
+
+    public function logout()
+    {
+        // upewniamy się, że sesja jest uruchomiona
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // czyścimy wszystkie dane sesji
+        $_SESSION = [];
+
+        // opcjonalnie, kasujemy ciasteczko sesji po stronie przeglądarki
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params["path"],
+                $params["domain"],
+                $params["secure"],
+                $params["httponly"]
+            );
+        }
+
+        // niszczymy sesję
+        session_destroy();
+
+        // przekierowanie np. na ekran logowania
+        $url = "http://$_SERVER[HTTP_HOST]";
+        header("Location: {$url}/login");
     }
 
     public function register()

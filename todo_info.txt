@@ -1,0 +1,11 @@
+- sól przechowana w bazie aby zabezpieczyć dane osobowe na etapie widoku/formularza
+- do limitu int najcześciej chyba PDO::PARAM_INT i jakiś limit zamiast PARAM_STR
+- w procesie autentykacji 
+- REGEX i przekazywanie id w routingu i przerobienie routingu (ze switch na if już mam)
+- SQL injection - singleton
+- BINGO: jeden pion, jeden poziom, 1 przekątna
+
+- inarray($path, Routing::$routes) w routingu
+- nawet jeżeli inny routing podpowiedziany przez AI to nic się nie stanie, nie musi być wszstko 100% jak na zajęciach,
+  chodzi o to żeby umieć samemu robic 
+- ponoć będzie pytanie "jak to z tą obiektowością"

@@ -14,6 +14,10 @@ class Routing
                 'controller' => 'SecurityController',
                 'action' => 'login'
             ],
+            'logout' => [
+                'controller' => 'SecurityController',
+                'action' => 'logout'
+            ],
             'register' => [
                 'controller' => 'SecurityController',
                 'action' => 'register'
@@ -22,6 +26,10 @@ class Routing
                 'controller' => 'DashboardController',
                 'action' => 'index'
             ],
+            'search-cards' => [
+                'controller' => 'DashboardController',
+                'action' => 'search'
+            ]
         ];
     }
 
